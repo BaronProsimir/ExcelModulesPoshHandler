@@ -1,0 +1,4 @@
+{
+  "powershell.cwd": "${workspaceFolder}",
+  "terminal.integrated.cwd": "${workspaceFolder}"
+}
