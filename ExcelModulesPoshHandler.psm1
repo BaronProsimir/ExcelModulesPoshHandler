@@ -2,6 +2,8 @@
 using namespace Microsoft.VBE.Interop
 using namespace Microsoft.Office.Interop.Excel
 
+#region Public functions:
+
 <#
 
   .SYNOPSIS
@@ -11,13 +13,16 @@ using namespace Microsoft.Office.Interop.Excel
   Exports the Excel VBAProject members from the passed Excel file/s into the folders.
 
   .LINK
-  https://github.com/BaronProsimir/ExcelModulesPoshHandler/wiki
+  Function documentation: https://github.com/BaronProsimir/ExcelModulesPoshHandler/wiki/Export_ExcelModulesAll
+  
+  Contact the author: BaronProsimir@gmail.com
+  Project repository: https://github.com/BaronProsimir/ExcelModulesPoshHandler/
 
   .EXAMPLE
   Test-MyTestFunction -Verbose
   Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
-  .INPUTS
 
+  .INPUTS
   System.String[]
   
   .OUTPUTS
@@ -29,7 +34,7 @@ function Export-All {
   Param (
 
     # Specifies the path to one or more Excel files. Wildcard characters are permitted.
-    [Parameter(Mandatory, Position=0)]
+    [Parameter(Mandatory, Position=0, ValueFromPipelineByPropertyName)]
     [string[]]$Path,
 
     # Specifies the path to a resource. Unlike Path , the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell PowerShell not to interpret any characters as escape sequences.
@@ -80,7 +85,7 @@ function Export-All {
         #region Checks, if the oppened Excel file contains a VBA project:
 
         if ($eFile.HasVBProject) {
-          ## If yes:
+          <# If it contains the VBA #>
 
           Write-Verbose -Message "Excel file '$FileName' has VBA project.";
 
@@ -89,12 +94,16 @@ function Export-All {
           # Set default ExportFolderName:
           if ( $ExportFolderName -eq "" ) { $ExportFolderName = "$FileName`_$($vbProject.Name)" };
           
-          # Generate a Code hierarchy folders:
+          <# TODO
+            Replace hard-coded values above with the ones from the UserConfig.json file!
+          #>
+
+          # Generate a Code hierarchy folders (hard-coded) :
           $RootFolder =  New-Item -Path "$Destination\$ExportFolderName" -ItemType "Directory" -Force;
-          $UserFormsPath = New-Item -Path $RootFolder -Name "UserForms" -ItemType Directory -Force;
-          $ModulesPath = New-Item -Path $RootFolder -Name "Modules" -ItemType Directory -Force
-          $ClassModulesPath = New-Item -Path $RootFolder -Name "ClassModules" -ItemType Directory -Force;
-          $OthersPath = New-Item -Path $RootFolder -Name "OtherObjects" -ItemType Directory -Force;
+          $UserFormsPath = New-Item -Path $RootFolder -Name "UserForms" -ItemType "Directory" -Force;
+          $ModulesPath = New-Item -Path $RootFolder -Name "Modules" -ItemType "Directory" -Force
+          $ClassModulesPath = New-Item -Path $RootFolder -Name "ClassModules" -ItemType "Directory" -Force;
+          $OthersPath = New-Item -Path $RootFolder -Name "OtherObjects" -ItemType "Directory" -Force;
 
           # Final path variable:
           $ExportPath = "";
@@ -104,7 +113,7 @@ function Export-All {
             # Sort the current Component by its type:
             switch ([Microsoft.Vbe.Interop.vbext_ComponentType]$component.Type) {
               
-              ( [Microsoft.Vbe.Interop.vbext_ComponentType]::vbext_ct_MSForm ) { 
+              ( [Microsoft.Vbe.Interop.vbext_ComponentType]::vbext_ct_MSForm ) {
                 Write-Verbose -Message "'$($component.name)' component type is: A UserForm.";
                 
                 $ExportPath = Convert-Path -Path $UserFormsPath;
@@ -120,7 +129,7 @@ function Export-All {
 
               };
 
-              ( [Microsoft.Vbe.Interop.vbext_ComponentType]::vbext_ct_ClassModule ) {              
+              ( [Microsoft.Vbe.Interop.vbext_ComponentType]::vbext_ct_ClassModule ) {
                 Write-Verbose -Message "'$($component.name)' component type is: A ClassModule.";
 
                 $ExportPath = Convert-Path -Path $ClassModulesPath;
@@ -129,7 +138,7 @@ function Export-All {
               };
 
               Default {
-                Write-Verbose -Message "'$($component.name)' component type is: An other type of an object.";
+                Write-Verbose -Message "'$($component.name)' component type is: An other type of the object.";
                 
                 $ExportPath = Convert-Path -Path $OthersPath;
                 $ExportPath += "\$($component.name).cls";
@@ -145,7 +154,7 @@ function Export-All {
         
         } else { Write-Verbose -Message "Excel file '$FileName' has no VBAProject." };
         
-        #endregion
+        #endregion of the checks.
 
         # Close the current Worksheet:
         $eFile.Close();
@@ -154,17 +163,18 @@ function Export-All {
 
     } catch {
       Write-Error -Message "$_";
+    } finally {
+
+      # Quit the Excel app if exists:
+      if ( $null -ne $excel ) { $excel.Quit(); }
+
     }
 
-  } end {
+  } end { return; }
 
-    # Quit the Excel app:
-    $excel.Quit()
-    return;
-
-  }
 };
 
+#endregion of the public functions.
 #region Configuration handling ( CRUD / NGSR ):
 
 function New-Configuration {
