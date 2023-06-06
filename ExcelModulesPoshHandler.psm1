@@ -5,16 +5,13 @@ using namespace Microsoft.Office.Interop.Excel
 <#
 
   .SYNOPSIS
-  A short one-line action-based description, e.g. 'Tests if a function is valid'
+  Exports the Excel VBAProject members from the passed Excel file/s into the folders.
 
   .DESCRIPTION 
   Exports the Excel VBAProject members from the passed Excel file/s into the folders.
 
-  .NOTES
-  Information or caveats about the function e.g. 'This function is not supported in Linux'
-
   .LINK
-  Specify a URI to a help page, this will show when Get-Help -Online is used.
+  https://github.com/BaronProsimir/ExcelModulesPoshHandler/wiki
 
   .EXAMPLE
   Test-MyTestFunction -Verbose
@@ -52,8 +49,8 @@ function Export-All {
   begin {
 
     # Add the Excel Application Namespace:
-    Add-type -AssemblyName Microsoft.VBE.Interop;
-    Add-type -AssemblyName Microsoft.Office.Interop.Excel;
+    # Add-type -AssemblyName Microsoft.VBE.Interop;
+    # Add-type -AssemblyName Microsoft.Office.Interop.Excel;
 
     # Clear the Error catch:
     $Error.Clear();
@@ -163,8 +160,8 @@ function Export-All {
 
     # Quit the Excel app:
     $excel.Quit()
-
     return;
+
   }
 };
 
@@ -269,8 +266,7 @@ function Remove-Configuration {
 }
 
 
-#endregion Configuration handling.
-
+#endregion of the Configuration handling.
 #region Implementation:
 
 <#
@@ -303,7 +299,7 @@ function Read-ConfigFile {
   
 }
 
-#endregion implementation.
+#endregion of the implementation.
 
 $ExportFuntions = @(
   "Export-All",
