@@ -1,6 +1,10 @@
-# Adding namespaces:
-using namespace Microsoft.VBE.Interop
-using namespace Microsoft.Office.Interop.Excel
+<# NOT SURE IF IT'S IMPORTANT OR NOT: 
+
+  # Adding namespaces:
+  using namespace Microsoft.VBE.Interop
+  using namespace Microsoft.Office.Interop.Excel
+
+#>
 
 #region Public functions:
 
@@ -54,8 +58,8 @@ function Export-All {
   begin {
 
     # Add the Excel Application Namespace:
-    # Add-type -AssemblyName Microsoft.VBE.Interop;
-    # Add-type -AssemblyName Microsoft.Office.Interop.Excel;
+    Add-type -AssemblyName Microsoft.VBE.Interop;
+    Add-type -AssemblyName Microsoft.Office.Interop.Excel;
 
     # Clear the Error catch:
     $Error.Clear();
