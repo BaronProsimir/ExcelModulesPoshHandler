@@ -27,7 +27,7 @@ using namespace Microsoft.Office.Interop.Excel
   System.IO.File
 
 #> 
-function Export-ExcelModules {
+function Export-All {
   [CmdletBinding()]
   Param (
 
@@ -170,24 +170,48 @@ function Export-ExcelModules {
 
 #region Configuration handling ( CRUD / NGSR ):
 
-function New-ExcelModulesConfiguration {
+function New-Configuration {
   [CmdletBinding()]
   param ()
   
 }
 
-function Get-ExcelModulesConfiguration {
-  param(
+function Get-Configuration {
+  param (
 
+    # Get a specific configuration.
+    [Parameter(Position=0, ValueFromPipelineByPropertyName, ValueFromPipeline)]
+    [string[]]$Keys,
+    
     # Get all existing configurations.
-    [Parameter()]
+    [Parameter(ValueFromPipelineByPropertyName)]
     [switch]$All
 
   )
-  return Read-ConfigFile;
+
+  begin {
+
+    if ($keys.Count -ge 1 ) { $All = $false } else { $All = $true };
+    if ($All) { return Read-ConfigFile ; exit };
+
+  } process {
+    try {
+
+      $resultObj = New-Object -TypeName "psobject";
+      $currentConfig = Read-ConfigFile;
+      
+      for ($key = 0; $key -lt $Keys.Count; $key++) {
+        Add-Member -InputObject $resultObj -Name "$key" -Value "$CurrentConfig.$key" -MemberType "NoteProperty";
+      }
+
+    } catch {
+      throw $PSItem;
+    }
+
+  } end { return $resultObj; }
 };
 
-function Set-ExcelModulesConfiguration {
+function Set-Configuration {
   [CmdletBinding()]
   param (
 
@@ -239,7 +263,7 @@ function Set-ExcelModulesConfiguration {
   } end { return $currentConfigBody }
 };
 
-function Remove-ExcelModulesConfiguration {
+function Remove-Configuration {
   param()
   
 }
@@ -263,19 +287,30 @@ function Read-ConfigFile {
   # Handle the switch parameter:
   if ( $Default ) { $configFile = "DefaultConfig.json" } else { $configFile = "UserConfig.json" };
 
-  # Return the configuration:
-  return ( Get-Content -Path ".\Files\Configuration\$configFile" | ConvertFrom-Json );
+  try {
+
+    # Convert 
+    $configFilePath = Convert-Path -Path "$PSScriptRoot\Files\Configuration\$configFile";
+
+    # Return the configuration:
+    return ( Get-Content -Path "$configFilePath" | ConvertFrom-Json );
+    
+  }
+  catch {
+    Throw $PSItem;
+  }
+  
   
 }
 
 #endregion implementation.
 
 $ExportFuntions = @(
-  "Export-ExcelModules",
-  "New-ExcelModulesConfiguration",
-  "Get-ExcelModulesConfiguration",
-  "Set-ExcelModulesConfiguration",
-  "Remove-ExcelModulesConfiguration"
+  "Export-All",
+  "New-Configuration",
+  "Get-Configuration",
+  "Set-Configuration",
+  "Remove-Configuration"
 );
 
 Export-ModuleMember -Function $ExportFuntions;
