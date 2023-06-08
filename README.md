@@ -8,8 +8,10 @@
 
 ## Overview ##
 
-The ExcelModulesPoshHandler is a [PowerShell](https://learn.microsoft.com/en-us/powershell/) module which contains functions that helps you manage an Excel VBA Modules.  
-By help is means:
+The ExcelModulesPoshHandler is a [PowerShell](https://learn.microsoft.com/en-us/powershell/) module which contains functions that helps you manage an Excel VBA Modules.
+
+
+By help means:
 
   * [Exporting](https://github.com/BaronProsimir/ExcelModulesPoshHandler/wiki/Export_ExcelModulesAll) the members of VBAProject ( modules, classes and form ) from the passed Excel file/s,
   * Comming soon...
