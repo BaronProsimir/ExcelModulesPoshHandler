@@ -23,8 +23,22 @@
   Project repository: https://github.com/BaronProsimir/ExcelModulesPoshHandler/
 
   .EXAMPLE
-  Test-MyTestFunction -Verbose
-  Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+  Export-ExcelMacrosAll -Path $env:userprofile\Documents\ExcelFile\TestFile.xlsm
+
+  Exports content of the VBAProject from the 'TestFile.xlsm' into the current directory hierarchized into folders.
+  [NOTE]> Root folder of the hierarchy will be named 'TestFile.xlsm_VBAProject' by default.
+
+  .EXAMPLE 
+  Export-ExcelMacrosAll -Path $env:userprofile\Documents\ExcelFile\TestFile.xlsm -Destination $env:userprofile\Documents\Macros
+
+  Exports content of the VBAProject from the 'TestFile.xlsm' into the 'Macros' folder hierarchized into folders.
+  [NOTE]> Root folder of the hierarchy will be named 'TestFile.xlsm_VBAProject' by default.
+
+  .EXAMPLE
+  Export-ExcelMacrosAll -Path $env:userprofile\Documents\ExcelFile\TestFile.xlsm -Destination $env:userprofile\Documents\Macros -ExportFolderName "TestFileVbaModules"
+
+  Exports all VBA modules from the 'TestFile.xlsm' into the 'Macros' folder hierarchized into folders.
+  [NOTE]> Root folder of the hierarchy will be named "TestFileVbaModules".
 
   .INPUTS
   System.String[]
