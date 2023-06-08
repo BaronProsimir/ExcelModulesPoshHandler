@@ -21,7 +21,7 @@ By help means:
 ExcelModulesPoshHandler is currently **not** in [PowerShell Gallery](https://www.powershellgallery.com).
 That's mean you have to download it first and then install it to your computer. By do this, follow the following steps:
 
-  1. [Download](https://github.com/BaronProsimir/ExcelModulesPoshHandler/archive/refs/heads/master.zip) the ExcelModulesPoshHandler.
+  1. [Download](https://github.com/BaronProsimir/ExcelModulesPoshHandler/archive/refs/heads/master.zip) the `ExcelModulesPoshHandler` module.
   2. Extract the downloaded folder:
 
   ```PowerShell
