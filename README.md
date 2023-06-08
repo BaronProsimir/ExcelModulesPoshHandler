@@ -9,7 +9,7 @@
 ## Overview ##
 
 The ExcelModulesPoshHandler is a [PowerShell](https://learn.microsoft.com/en-us/powershell/) module which contains functions that helps you manage an Excel VBA Modules.
-By help is mean [Exporting ]().
+By help is mean [Exporting](https://github.com/BaronProsimir/ExcelModulesPoshHandler/wiki/Export_ExcelModulesAll) the members of VBAProject ( modules, classes and form ) from the passed Excel file/s,...
 
 ## Installation ##
 
@@ -25,7 +25,7 @@ That's mean you have to download it first and then install it to your computer. 
 
   More info about the command you can find [here.](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.archive/expand-archive?view=powershell-5.1)
 
-  3. Add following line to your [$PROFILE](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles?view=powershell-5.1#the-profile-variable) file:
+  3. Add the following line to your [$PROFILE](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles?view=powershell-5.1#the-profile-variable) file:
 
   ```PowerShell
     Import-Module -Name "$( ($env:PSModulePath -split ';')[0] )\ExcelModulesPoshHandler-master\ExcelModulesPoshHandler.psd1";
