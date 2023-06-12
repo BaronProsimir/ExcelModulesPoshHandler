@@ -175,7 +175,9 @@ function Export-All {
         #endregion of the checks.
 
         # Close the current Worksheet:
+        $excel.DisplayAlerts = $false;
         $eFile.Close();
+        $excel.DisplayAlerts = $true;
 
       }
 
@@ -184,7 +186,10 @@ function Export-All {
     } finally {
 
       # Quit the Excel app if exists:
-      if ( $null -ne $excel ) { $excel.Quit(); }
+      if ( $null -ne $excel ) { 
+        $excel.DisplayAlerts = $false;
+        $excel.Quit();
+        $excel.DisplayAlerts = $true;}
 
     }
 
