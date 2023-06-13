@@ -82,12 +82,26 @@ function Export-All {
     # Clear the Error catch:
     $Error.Clear();
 
-    # Convert the paths to PSPaths:
-    $Path = Convert-Path -Path $Path;
-    $Destination = Convert-Path -Path $Destination;
+    # Check if the paths exists, if yes, convert them to a PSPaths:
+    try {
+      
+      # $Path parameter:
+      if ( !(Test-Path -Path $Path) ) {
+        throw [System.Management.Automation.ItemNotFoundException]::new("Path '$Path' do not exist! Insert an existing one please.");
+      } else { $Path = Convert-Path -Path $Path; };
+      
+      # $Destination parameter:
+      if ( !(Test-Path -Path $Destination) ) {
+        throw [System.Management.Automation.ItemNotFoundException]::new("Destination path '$Destination' do not exist! Insert an existing one please.");
+      } else { $Destination = Convert-Path -Path $Destination; };
+      
+    } catch {
+      Write-Error -Message $PSItem;
+      Exit;
+    }
 
-    # Create Excel object:
-    $excel = new-object -TypeName "Microsoft.Office.Interop.Excel.ApplicationClass";
+    # Create an Excel object:
+    $excel = New-Object -TypeName "Microsoft.Office.Interop.Excel.ApplicationClass";
 
   } process {
 
@@ -163,15 +177,11 @@ function Export-All {
 
               };
 
-              # Ignore this if ExcludeSheet is $true:
               Default {
                 Write-Verbose -Message "'$($component.name)' component type is: An other type of object. $( if ($ExcludeSheets) { "- WILL BE IGNORED [ExcludeSheets]" } )";
-                
-
 
                 if (!$ExcludeSheets) {
-                  
-                  
+                  <# Ignore this if ExcludeSheet is $true. #>
                   $ExportPath = Convert-Path -Path $OthersPath;
                   $ExportPath += "\$($component.name).cls";
                 };
@@ -208,7 +218,10 @@ function Export-All {
 
     }
 
-  } end { return; }
+  } end { 
+    Remove-Variable -Name "excel";
+    return;
+  }
 
 };
 
