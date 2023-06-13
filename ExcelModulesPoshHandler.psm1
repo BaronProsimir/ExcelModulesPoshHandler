@@ -358,6 +358,41 @@ function Read-ConfigFile {
   
 }
 
+function New-OptionMenu {
+  param (
+    # Parameter help description
+    [Parameter(Mandatory)]
+    [String]$Caption,
+
+    # Parameter help description
+    [Parameter(Mandatory)]
+    [String]$Message,
+
+    #
+    [Parameter(Mandatory)]
+    [System.Management.Automation.Host.ChoiceDescription[]]$OptionDescriptions,
+
+    # 
+    [Parameter()]
+    [int]$DefaultChoice = -1
+      
+  )
+
+  $OptionsList = $null;
+
+  foreach ($option in $OptionDescription) {
+    $OptionsList += $option;
+  }
+
+  return $Host.UI.PromptForChoice(
+    $Caption,
+    $Message,
+    $OptionDescriptions,
+    $DefaultChoice
+  );
+  
+}
+
 #endregion of the implementation.
 
 $ExportFuntions = @(
