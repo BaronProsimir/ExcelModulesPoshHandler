@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "type": "PowerShell",
+      "request": "launch",
+      "name": "PowerShell: Debug the 'ExcelModulesPoshHandler' module.",
+      "script": "Import-Module -Force ${workspaceFolder}\\ExcelModulesPoshHandler.psd1"
+    }
+  ]
+}
