@@ -89,6 +89,7 @@ function Export-All {
 
     try {
       
+      $previousExportFolderName = "";
       foreach ($PathMember in $Path) {
 
         # Get the file name from the full path:
@@ -110,7 +111,10 @@ function Export-All {
           $vbProject = $eFile.VBProject;
 
           # Set default ExportFolderName:
-          if ( $ExportFolderName -eq "" ) { $ExportFolderName = "$FileName`_$($vbProject.Name)" };
+          if ( $ExportFolderName -eq "" -or $ExportFolderName -eq $previousExportFolderName ) { 
+            $ExportFolderName = "$FileName`_$($vbProject.Name)" 
+            $previousExportFolderName = $ExportFolderName;
+          };
           
           <# TODO
             Replace hard-coded values above with the ones from the UserConfig.json file!
