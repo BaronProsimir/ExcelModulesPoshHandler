@@ -13,7 +13,7 @@
   .SYNOPSIS
   Exports the Excel VBAProject members from the passed Excel file/s into the folders.
 
-  .DESCRIPTION 
+  .DESCRIPTION
   Exports the Excel VBAProject members from the passed Excel file/s into the folders.
 
   .LINK
