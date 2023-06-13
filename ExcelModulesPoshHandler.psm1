@@ -65,7 +65,11 @@ function Export-All {
 
     # Specifies the name of the Export folder. The default is the Name of the Excel file + "_" + the Name of the VBProject.
     [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName)][Alias("Name", "EFN")]
-    [string]$ExportFolderName
+    [string]$ExportFolderName,
+
+    # Specifies whether Sheets will be excluded from export.
+    [Parameter(ValueFromPipelineByPropertyName)]
+    [switch]$ExcludeSheets
 
   )
 
@@ -125,7 +129,7 @@ function Export-All {
           $UserFormsPath = New-Item -Path $RootFolder -Name "UserForms" -ItemType "Directory" -Force;
           $ModulesPath = New-Item -Path $RootFolder -Name "Modules" -ItemType "Directory" -Force
           $ClassModulesPath = New-Item -Path $RootFolder -Name "ClassModules" -ItemType "Directory" -Force;
-          $OthersPath = New-Item -Path $RootFolder -Name "OtherObjects" -ItemType "Directory" -Force;
+          if (!$ExcludeSheets) { $OthersPath = New-Item -Path $RootFolder -Name "OtherObjects" -ItemType "Directory" -Force; }
 
           # Final path variable:
           $ExportPath = "";
@@ -159,12 +163,15 @@ function Export-All {
 
               };
 
+              # Ignore this if ExcludeSheet is $true:
               Default {
-                Write-Verbose -Message "'$($component.name)' component type is: An other type of the object.";
-                
-                $ExportPath = Convert-Path -Path $OthersPath;
-                $ExportPath += "\$($component.name).cls";
-
+                if (!$ExcludeSheets) {
+                  
+                  Write-Verbose -Message "'$($component.name)' component type is: An other type of the object.";
+                  
+                  $ExportPath = Convert-Path -Path $OthersPath;
+                  $ExportPath += "\$($component.name).cls";
+                }
               }
 
             }
