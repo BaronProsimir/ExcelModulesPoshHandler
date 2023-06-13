@@ -53,19 +53,19 @@ function Export-All {
 
     # Specifies the path to one or more Excel files. Wildcard characters are permitted.
     [Parameter(Mandatory, Position=0, ValueFromPipelineByPropertyName)]
-    [string[]]$Path,
+    [String[]]$Path,
 
-    # Specifies the path to a resource. Unlike Path , the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell PowerShell not to interpret any characters as escape sequences.
+    # Specifies the path to a resource. Unlike Path, the value of the LiteralPath parameter is used exactly as it is typed. No characters are interpreted as wildcards. If the path includes escape characters, enclose it in single quotation marks. Single quotation marks tell PowerShell not to interpret any characters as escape sequences.
     [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName)][Alias("PSPath", "LP")]
-    [string[]]$LiteralPath,
+    [String[]]$LiteralPath,
 
     # Specifies the path to where the modules will be exported. The default is the current directory.
     [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName)]
-    [string]$Destination = [System.Environment]::CurrentDirectory,
+    [String]$Destination = [System.Environment]::CurrentDirectory,
 
     # Specifies the name of the Export folder. The default is the Name of the Excel file + "_" + the Name of the VBProject.
     [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName)][Alias("Name", "EFN")]
-    [string]$ExportFolderName,
+    [String]$ExportFolderName,
 
     # Specifies whether Sheets will be excluded from export.
     [Parameter(ValueFromPipelineByPropertyName)][Alias('NoSheets')]
@@ -86,14 +86,12 @@ function Export-All {
     try {
       
       # $Path parameter:
-      if ( !(Test-Path -Path $Path) ) {
-        throw [System.Management.Automation.ItemNotFoundException]::new("Path '$Path' do not exist! Insert an existing one please.");
-      } else { $Path = Convert-Path -Path $Path; };
+      if ( !(Test-Path -Path $Path) ) { throw [System.Management.Automation.ItemNotFoundException]::new("Cannot find path '$Path' because it does not exist."); }
+      else { $Path = Convert-Path -Path $Path; };
       
       # $Destination parameter:
-      if ( !(Test-Path -Path $Destination) ) {
-        throw [System.Management.Automation.ItemNotFoundException]::new("Destination path '$Destination' do not exist! Insert an existing one please.");
-      } else { $Destination = Convert-Path -Path $Destination; };
+      if ( !(Test-Path -Path $Destination) ) { throw [System.Management.Automation.ItemNotFoundException]::new("Cannot find path '$Destination' because it does not exist."); }
+      else { $Destination = Convert-Path -Path $Destination; };
       
     } catch {
       Write-Error -Message $PSItem;
@@ -239,7 +237,7 @@ function Get-Configuration {
 
     # Get a specific configuration.
     [Parameter(Position=0, ValueFromPipelineByPropertyName, ValueFromPipeline)]
-    [string[]]$Keys,
+    [String[]]$Keys,
     
     # Get all existing configurations.
     [Parameter(ValueFromPipelineByPropertyName)]
@@ -275,11 +273,11 @@ function Set-Configuration {
 
     # Name/s of the parameter/s.
     [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
-    [string[]]$Name,
+    [String[]]$Name,
 
     # New value/s of the parameter/s.
     [Parameter(Mandatory, ValueFromPipelineByPropertyName)][AllowNull()][AllowEmptyString()]
-    [string[]]$Value,
+    [String[]]$Value,
 
     # Prompts you for confirmation before running the function.
     [Parameter(ValueFromPipelineByPropertyName)][Alias('cf')]
