@@ -3,7 +3,7 @@
 ### Table of Contents: ###
 
 * [Overview](#overview)
-* [Installation](#installation)
+* [Installation](#installation "Step-by-step local installation guide")
 
 
 ## Overview ##
@@ -18,7 +18,7 @@ By help means:
 
 ## Installation ##
 
-**`ExcelModulesPoshHandler` is currently <ins>not</ins> in [PowerShell Gallery](https://www.powershellgallery.com "PowerShell Gallery | Home").**  
+**`ExcelModulesPoshHandler` is currently <ins>not</ins> in the [PowerShell Gallery](https://www.powershellgallery.com "PowerShell Gallery | Home").**  
 
 That's mean you have to download it first and then install it to your computer. By do this, follow the following steps:
 
