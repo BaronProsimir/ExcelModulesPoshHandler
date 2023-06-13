@@ -68,7 +68,7 @@ function Export-All {
     [string]$ExportFolderName,
 
     # Specifies whether Sheets will be excluded from export.
-    [Parameter(ValueFromPipelineByPropertyName)]
+    [Parameter(ValueFromPipelineByPropertyName)][Alias('NoSheets')]
     [switch]$ExcludeSheets
 
   )
@@ -165,19 +165,22 @@ function Export-All {
 
               # Ignore this if ExcludeSheet is $true:
               Default {
+                Write-Verbose -Message "'$($component.name)' component type is: An other type of object. $( if ($ExcludeSheets) { "- WILL BE IGNORED [ExcludeSheets]" } )";
+                
+
+
                 if (!$ExcludeSheets) {
                   
-                  Write-Verbose -Message "'$($component.name)' component type is: An other type of the object.";
                   
                   $ExportPath = Convert-Path -Path $OthersPath;
                   $ExportPath += "\$($component.name).cls";
-                }
+                };
               }
 
             }
             
             # Export the current Component:
-            $component.Export("$ExportPath");
+            if( $ExportPath -ne "" ) { $component.Export("$ExportPath"); }
 
           } # end of the foreach loop.
         
@@ -200,7 +203,8 @@ function Export-All {
       if ( $null -ne $excel ) { 
         $excel.DisplayAlerts = $false;
         $excel.Quit();
-        $excel.DisplayAlerts = $true;}
+        $excel.DisplayAlerts = $true;
+      }
 
     }
 
